@@ -1,0 +1,27 @@
+{
+  "name": "project-tabs",
+  "version": "1.0.0",
+  "description": "A project to manage your project related tabs in a single place",
+  "main": "index.js",
+  "scripts": {
+    "serve": "rspack serve -c rspack.config.ts",
+    "build": "rspack build -c rspack.config.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rspack/cli": "^0.7.1",
+    "@rspack/core": "^0.7.1",
+    "@rspack/plugin-react-refresh": "^0.7.1",
+    "@types/node": "^20.14.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "react-refresh": "^0.14.2",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
