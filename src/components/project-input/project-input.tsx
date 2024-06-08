@@ -4,7 +4,7 @@ import * as styles from "./project-input.module.css";
 
 export default function ProjectInput() {
   return (
-    <div className={styles["project-input-wrapper"]}>
+    <form className={styles["project-input-wrapper"]}>
       <input
         type="text"
         name="project_name"
@@ -13,7 +13,7 @@ export default function ProjectInput() {
         autoCorrect="off"
         autoFocus
       />
-      <Button>Create</Button>
-    </div>
+      <Button>CREATE</Button>
+    </form>
   );
 }

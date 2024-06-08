@@ -3,8 +3,13 @@
 }
 
 .tabs-list-item {
-  @apply flex gap-1.5 cursor-pointer py-1.5 px-3
-         rounded-sm border-blue-300/40 border 
-         hover:bg-blue-300/40 transition-colors
-         active:bg-blue-300/85;
+  @apply relative flex gap-1.5 cursor-pointer py-1.5 px-3
+        border-blue-300/40 border transition-colors
+         active:bg-blue-300/85 rounded-lg;
+}
+
+.checkmark {
+  @apply absolute grid place-items-center right-0 top-0 
+        w-5 h-5 bg-white rounded-full translate-x-1/2
+        -translate-y-1/2 border border-blue-500/20;
 }
