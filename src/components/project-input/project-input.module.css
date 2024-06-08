@@ -1,0 +1,7 @@
+.project-input-wrapper {
+  @apply flex flex-col gap-1.5;
+}
+
+.project-input-wrapper input {
+  @apply px-2 py-1 rounded-lg border-black/10 border;
+}

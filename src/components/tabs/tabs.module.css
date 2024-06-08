@@ -1,0 +1,10 @@
+.tabs-list {
+  @apply flex flex-col gap-1.5;
+}
+
+.tabs-list-item {
+  @apply flex gap-1.5 cursor-pointer py-1.5 px-3
+         rounded-sm border-blue-300/40 border 
+         hover:bg-blue-300/40 transition-colors
+         active:bg-blue-300/85;
+}
