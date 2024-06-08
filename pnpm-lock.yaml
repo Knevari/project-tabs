@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  chrome-types:
+    specifier: ^0.1.287
+    version: 0.1.287
   react:
     specifier: ^18.3.1
     version: 18.3.1
@@ -803,6 +806,10 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
     dev: true
+
+  /chrome-types@0.1.287:
+    resolution: {integrity: sha512-4M/l4tVZxCP1asQMH+9q6jRA9OTBnY1/eV+CdM3yXwnV4mvA5zXAczqFuQLK9UWJKx825NjJ0hDpvz9dWbZJfA==}
+    dev: false
 
   /cliui@8.0.1:
     resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}

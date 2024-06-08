@@ -12,11 +12,6 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
-  experiments: {
-    rspackFuture: {
-      disableTransformByDefault: true,
-    },
-  },
   module: {
     rules: [
       {
