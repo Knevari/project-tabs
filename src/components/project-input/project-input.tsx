@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "../button";
 import * as styles from "./project-input.module.css";
 
 export default function ProjectInput() {
@@ -12,7 +13,7 @@ export default function ProjectInput() {
         autoCorrect="off"
         autoFocus
       />
-      <button>Create</button>
+      <Button>Create</Button>
     </div>
   );
 }

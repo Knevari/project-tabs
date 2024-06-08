@@ -82,6 +82,20 @@ const config = defineConfig({
         },
         type: "javascript/auto",
       },
+      {
+        test: /\.ts$/,
+        use: {
+          loader: "builtin:swc-loader",
+          options: {
+            jsc: {
+              parser: {
+                syntax: "typescript",
+              },
+            },
+          },
+        },
+        type: "javascript/auto",
+      },
     ],
   },
   plugins: [
