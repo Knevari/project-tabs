@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "@/utils/cn";
 import { button } from "./button.variants";
 
 const Button = ({

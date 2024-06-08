@@ -13,3 +13,11 @@
         w-5 h-5 bg-white rounded-full translate-x-1/2
         -translate-y-1/2 border border-blue-500/20;
 }
+
+.tabs-form {
+  @apply flex flex-col gap-1.5;
+}
+
+.tabs-form input {
+  @apply px-2 py-1 border-black/10 border;
+}

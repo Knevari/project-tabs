@@ -1,6 +1,7 @@
 import { defineConfig } from "@rspack/cli";
 import rspack from "@rspack/core";
 import ReactRefreshPlugin from "@rspack/plugin-react-refresh";
+import path from "path";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -12,6 +13,9 @@ const config = defineConfig({
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
   module: {
     rules: [
