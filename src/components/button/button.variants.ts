@@ -8,7 +8,7 @@ const buttonVariants = cva("font-semibold rounded-lg", {
     },
     size: {
       small: "p-1",
-      medium: "p-1.5",
+      medium: "py-1.5 px-2",
       large: "px-3 py-2",
     },
   },

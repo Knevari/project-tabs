@@ -1,14 +1,29 @@
 import React from "react";
-import { Tabs } from "@/components/tabs";
-import { TabsProvider } from "@/contexts/tabs";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+
+import { PopupWrapper } from "./components/popup-wrapper";
+
+const router = createMemoryRouter([
+  {
+    path: "/",
+    lazy: async () => {
+      const Projects = await import("./pages/projects");
+      return { Component: Projects.default };
+    },
+  },
+  {
+    path: "/create",
+    lazy: async () => {
+      const CreateProject = await import("./pages/create-project");
+      return { Component: CreateProject.default };
+    },
+  },
+]);
 
 export default function App() {
   return (
-    <div className="min-w-[400px] p-3 flex flex-col gap-3">
-      <h1 className="text-2xl font-semibold">Tabs</h1>
-      <TabsProvider>
-        <Tabs />
-      </TabsProvider>
-    </div>
+    <PopupWrapper>
+      <RouterProvider router={router} />
+    </PopupWrapper>
   );
 }

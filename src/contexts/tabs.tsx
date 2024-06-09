@@ -19,17 +19,6 @@ export function TabsProvider({ children }: { children: React.ReactNode }) {
 
   const groupTabs = useCallback(
     async (groupTitle: string, tabIds: number[]) => {
-      const hasPerm = await chrome.permissions.contains({
-        permissions: ["tabGroups"],
-      });
-
-      if (!hasPerm) {
-        const granted = await chrome.permissions.request({
-          permissions: ["tabGroups"],
-        });
-        if (!granted) throw new Error("Can't group tabs without permission");
-      }
-
       const groupId = await chrome.tabs.group({ tabIds });
       await chrome.tabGroups.update(groupId, {
         title: groupTitle,

@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { produce } from "immer";
 import { Check } from "lucide-react";
 
 import { Button } from "@/components/button";
 import { useTabs } from "@/contexts/tabs";
 
-import * as styles from "./tabs.module.css";
-import { tab as tabVariants } from "./tabs.variants";
+import * as styles from "./create-project.module.css";
+import { tab as tabVariants } from "./create-project.variants";
+
+import ProjectsService from "@/services/projects";
 
 type Tab = chrome.tabs.Tab;
 
 const defaultTab = tabVariants();
 const activeTab = tabVariants({ intent: "active" });
 
-export default function Tabs() {
+export default function CreateProject() {
   const { tabs, groupTabs, refreshTabs } = useTabs();
 
   const [selected, setSelected] = useState<Record<string, Tab>>({});
@@ -37,6 +39,7 @@ export default function Tabs() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMessage("");
 
     if (Object.keys(selected).length === 0) {
       setErrorMessage("You need to select at least one tab");
@@ -52,12 +55,46 @@ export default function Tabs() {
     }
 
     try {
-      await groupTabs(projectName, Object.keys(selected).map(Number));
+      const hasPermission = await chrome.permissions.contains({
+        permissions: ["tabGroups"],
+      });
+
+      if (!hasPermission) {
+        const granted = await chrome.permissions.request({
+          permissions: ["tabGroups"],
+        });
+        if (!granted)
+          throw new Error("Can't create project without permissions.");
+      }
+
+      const tabIds = Object.keys(selected).map(Number);
+      const groupId = await groupTabs(projectName, tabIds);
+
+      await ProjectsService.addProject({
+        title: projectName,
+        groupId,
+        tabIds,
+      });
+
       await refreshTabs();
+      setSelected({});
     } catch (error) {
       setErrorMessage(error.message);
     }
   };
+
+  useEffect(() => {
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+      for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+        console.log(
+          `Storage key "${key}" in namespace "${namespace}" changed.`,
+          `Old value was "${JSON.stringify(
+            oldValue
+          )}", new value is "${JSON.stringify(newValue)}".`
+        );
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -83,7 +120,7 @@ export default function Tabs() {
         ))}
       </ul>
 
-      <form className={styles["tabs-form"]} onSubmit={onSubmit}>
+      <form className={styles["create-project-form"]} onSubmit={onSubmit}>
         <input
           type="text"
           name="project_name"

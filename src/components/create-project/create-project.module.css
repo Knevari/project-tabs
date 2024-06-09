@@ -14,10 +14,10 @@
         -translate-y-1/2 border border-blue-500/20;
 }
 
-.tabs-form {
+.create-project-form {
   @apply flex flex-col gap-1.5;
 }
 
-.tabs-form input {
+.create-project-form input {
   @apply px-2 py-1 border-black/10 border;
 }

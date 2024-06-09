@@ -1,6 +1,6 @@
 import { type VariantProps, cva } from "class-variance-authority";
 import { twMerge } from "tailwind-merge";
-import * as styles from "./tabs.module.css";
+import * as styles from "./create-project.module.css";
 
 const tabVariants = cva(styles["tabs-list-item"], {
   variants: {
