@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/button";
-import ProjectsService, { Project } from "@/services/projects";
+import { useProjects } from "@/contexts/projects";
 
 export default function ProjectsPage() {
   const navigate = useNavigate();
-  const [projects, setProjects] = useState<Project[]>([]);
-
-  useEffect(() => {
-    ProjectsService.getProjects().then((projs) => setProjects(projs));
-  }, []);
+  const { projects } = useProjects();
 
   return (
     <>

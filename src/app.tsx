@@ -2,6 +2,7 @@ import React from "react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 
 import { PopupWrapper } from "./components/popup-wrapper";
+import { ProjectsProvider } from "./contexts/projects";
 
 const router = createMemoryRouter([
   {
@@ -23,7 +24,9 @@ const router = createMemoryRouter([
 export default function App() {
   return (
     <PopupWrapper>
-      <RouterProvider router={router} />
+      <ProjectsProvider>
+        <RouterProvider router={router} />
+      </ProjectsProvider>
     </PopupWrapper>
   );
 }

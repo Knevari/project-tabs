@@ -3,12 +3,12 @@ import { produce } from "immer";
 import { Check } from "lucide-react";
 
 import { Button } from "@/components/button";
+
 import { useTabs } from "@/contexts/tabs";
+import { useProjects } from "@/contexts/projects";
 
 import * as styles from "./create-project.module.css";
 import { tab as tabVariants } from "./create-project.variants";
-
-import ProjectsService from "@/services/projects";
 
 type Tab = chrome.tabs.Tab;
 
@@ -16,6 +16,7 @@ const defaultTab = tabVariants();
 const activeTab = tabVariants({ intent: "active" });
 
 export default function CreateProject() {
+  const { addProject } = useProjects();
   const { tabs, groupTabs, refreshTabs } = useTabs();
 
   const [selected, setSelected] = useState<Record<string, Tab>>({});
@@ -70,7 +71,7 @@ export default function CreateProject() {
       const tabIds = Object.keys(selected).map(Number);
       const groupId = await groupTabs(projectName, tabIds);
 
-      await ProjectsService.addProject({
+      await addProject({
         title: projectName,
         groupId,
         tabIds,
@@ -83,19 +84,6 @@ export default function CreateProject() {
     }
   };
 
-  useEffect(() => {
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-      for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-        console.log(
-          `Storage key "${key}" in namespace "${namespace}" changed.`,
-          `Old value was "${JSON.stringify(
-            oldValue
-          )}", new value is "${JSON.stringify(newValue)}".`
-        );
-      }
-    });
-  }, []);
-
   return (
     <>
       <ul className={styles["tabs-list"]}>
@@ -107,7 +95,11 @@ export default function CreateProject() {
             onClick={() => onSelectTab(tab)}
           >
             {tab.favIconUrl && (
-              <img className="max-w-4" src={tab.favIconUrl} alt="tab favicon" />
+              <img
+                className="max-w-4 aspect-square"
+                src={tab.favIconUrl}
+                alt="tab favicon"
+              />
             )}
             <p>{tab.title}</p>
 

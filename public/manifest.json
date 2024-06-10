@@ -12,6 +12,6 @@
   "action": {
     "default_popup": "index.html"
   },
-  "permissions": ["tabs"],
-  "optional_permissions": ["tabGroups", "storage"]
+  "permissions": ["tabs", "storage"],
+  "optional_permissions": ["tabGroups"]
 }
