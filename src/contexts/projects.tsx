@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTabs } from "./tabs";
 import slugify from "slugify";
+import { produce } from "immer";
 
 export interface Project {
   slug: string;
@@ -9,8 +10,14 @@ export interface Project {
   tabs: {
     id: number;
     title: string;
+    url: string;
     favIconUrl?: string;
   }[];
+}
+
+export interface UpdateProjectData
+  extends Omit<Partial<Project>, "tabs" | "slug"> {
+  tabIds?: number[];
 }
 
 export interface ProjectsContextValue {
@@ -21,6 +28,10 @@ export interface ProjectsContextValue {
     title: string,
     groupId: number,
     tabIds: number[]
+  ) => Promise<Project>;
+  updateProject: (
+    projectSlug: string,
+    projectData: UpdateProjectData
   ) => Promise<void>;
 }
 const ProjectsContext = React.createContext<ProjectsContextValue | undefined>(
@@ -53,23 +64,59 @@ export function ProjectsProvider({ children }: { children: React.ReactNode }) {
     const oldProjects = await getProjects();
     const tabs = await getTabsFromTabIds(tabIds);
 
-    const newProjects = [
-      ...oldProjects,
-      {
-        slug: slugify(title),
-        title,
-        groupId,
-        tabs: tabs.map((tab) => ({
-          id: tab.id,
-          title: tab.title,
-          favIconUrl: tab.favIconUrl,
-        })),
-      },
-    ];
+    const newProject = {
+      slug: slugify(title),
+      title,
+      groupId,
+      tabs: tabs.map((tab) => ({
+        id: tab.id,
+        title: tab.title,
+        url: tab.url,
+        favIconUrl: tab.favIconUrl,
+      })),
+    };
+
+    const newProjects = [...oldProjects, newProject];
 
     await chrome.storage.sync.set({
       projects: newProjects,
     });
+
+    return newProject;
+  };
+
+  const updateProject = async (
+    projectSlug: string,
+    projectData: UpdateProjectData
+  ) => {
+    const projects = await getProjects();
+    const tabs = await getTabsFromTabIds(projectData.tabIds);
+    const updatedProjects = produce(projects, (draft) => {
+      const project = draft.find((proj) => proj.slug === projectSlug);
+
+      if (!project) return;
+
+      if ("title" in projectData) {
+        const slug = slugify(projectData.title);
+        project.slug = slug;
+        project.title = projectData.title;
+      }
+
+      if ("tabIds" in projectData) {
+        project.tabs = tabs.map((tab) => ({
+          id: tab.id,
+          title: tab.title,
+          url: tab.url,
+          favIconUrl: tab.favIconUrl,
+        }));
+      }
+
+      if ("groupId" in projectData) {
+        project.groupId = projectData.groupId;
+      }
+    });
+    await chrome.storage.sync.set({ projects: updatedProjects });
+    setProjects(updatedProjects);
   };
 
   useEffect(() => {
@@ -92,7 +139,13 @@ export function ProjectsProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ProjectsContext.Provider
-      value={{ projects, getProjectBySlug, getProjects, addProject }}
+      value={{
+        projects,
+        getProjectBySlug,
+        getProjects,
+        addProject,
+        updateProject,
+      }}
     >
       {children}
     </ProjectsContext.Provider>

@@ -17,8 +17,10 @@ export function TabsProvider({ children }: { children: React.ReactNode }) {
     const tabs: chrome.tabs.Tab[] = [];
 
     for (const tabId of tabIds) {
-      const tab = await chrome.tabs.get(tabId);
-      tabs.push(tab);
+      try {
+        const tab = await chrome.tabs.get(tabId);
+        tabs.push(tab);
+      } catch {}
     }
 
     return tabs;

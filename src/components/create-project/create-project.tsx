@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { produce } from "immer";
 import { Check } from "lucide-react";
+import { produce } from "immer";
+import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/button";
 
@@ -16,6 +17,7 @@ const defaultTab = tabVariants();
 const activeTab = tabVariants({ intent: "active" });
 
 export default function CreateProject() {
+  const navigate = useNavigate();
   const { addProject } = useProjects();
   const { tabs, groupTabs, refreshTabs } = useTabs();
 
@@ -71,10 +73,10 @@ export default function CreateProject() {
       const tabIds = Object.keys(selected).map(Number);
       const groupId = await groupTabs(projectName, tabIds);
 
-      await addProject(projectName, groupId, tabIds);
+      const addedProject = await addProject(projectName, groupId, tabIds);
       await refreshTabs();
 
-      setSelected({});
+      navigate(`/projects/${addedProject.slug}`);
     } catch (error) {
       setErrorMessage(error.message);
     }

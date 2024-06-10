@@ -100,6 +100,11 @@ const config = defineConfig({
         },
         type: "javascript/auto",
       },
+      {
+        test: /\.svg$/i,
+        type: "asset",
+        resourceQuery: /url/, // *.svg?url
+      },
     ],
   },
   plugins: [
