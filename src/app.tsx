@@ -3,6 +3,7 @@ import { createMemoryRouter, RouterProvider } from "react-router-dom";
 
 import { PopupWrapper } from "./components/popup-wrapper";
 import { ProjectsProvider } from "./contexts/projects";
+import { TabsProvider } from "./contexts/tabs";
 
 const router = createMemoryRouter([
   {
@@ -19,14 +20,23 @@ const router = createMemoryRouter([
       return { Component: CreateProject.default };
     },
   },
+  {
+    path: "/projects/:projectSlug",
+    lazy: async () => {
+      const Project = await import("./pages/project");
+      return { Component: Project.default };
+    },
+  },
 ]);
 
 export default function App() {
   return (
     <PopupWrapper>
-      <ProjectsProvider>
-        <RouterProvider router={router} />
-      </ProjectsProvider>
+      <TabsProvider>
+        <ProjectsProvider>
+          <RouterProvider router={router} />
+        </ProjectsProvider>
+      </TabsProvider>
     </PopupWrapper>
   );
 }

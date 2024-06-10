@@ -71,13 +71,9 @@ export default function CreateProject() {
       const tabIds = Object.keys(selected).map(Number);
       const groupId = await groupTabs(projectName, tabIds);
 
-      await addProject({
-        title: projectName,
-        groupId,
-        tabIds,
-      });
-
+      await addProject(projectName, groupId, tabIds);
       await refreshTabs();
+
       setSelected({});
     } catch (error) {
       setErrorMessage(error.message);

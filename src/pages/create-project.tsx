@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/button";
 import { CreateProject } from "@/components/create-project";
 
-import { TabsProvider } from "@/contexts/tabs";
-
 export default function CreateProjectPage() {
   const navigate = useNavigate();
   return (
@@ -14,9 +12,7 @@ export default function CreateProjectPage() {
         <h1 className="text-2xl font-semibold">Create Project</h1>
         <Button onClick={() => navigate("/")}>See my projects</Button>
       </div>
-      <TabsProvider>
-        <CreateProject />
-      </TabsProvider>
+      <CreateProject />
     </>
   );
 }

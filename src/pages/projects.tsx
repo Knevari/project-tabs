@@ -1,8 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/button";
-import { useProjects } from "@/contexts/projects";
+import { Project, useProjects } from "@/contexts/projects";
 
 export default function ProjectsPage() {
   const navigate = useNavigate();
@@ -14,9 +14,21 @@ export default function ProjectsPage() {
         <h1 className="text-2xl font-semibold">Projects</h1>
         <Button onClick={() => navigate("/create")}>Create new</Button>
       </div>
-      {projects.map((project) => (
-        <h1>{project.title}</h1>
-      ))}
+      <div>
+        {projects.map((project) => (
+          <ProjectItem key={project.title} project={project} />
+        ))}
+      </div>
     </>
   );
 }
+
+const ProjectItem = ({ project }: { project: Project }) => {
+  return (
+    <Link to={`/projects/${project.slug}`}>
+      <div className="py-1.5 px-2">
+        <h3 className="font-semibold text-lg">{project.title}</h3>
+      </div>
+    </Link>
+  );
+};

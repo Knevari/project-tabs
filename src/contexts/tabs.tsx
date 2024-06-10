@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 
 export interface TabsContextValue {
   tabs: chrome.tabs.Tab[];
+  getTabsFromTabIds: (tabIds: number[]) => Promise<chrome.tabs.Tab[]>;
   groupTabs: (groupTitle: string, tabIds: number[]) => Promise<number>;
   refreshTabs: () => Promise<void>;
 }
@@ -11,6 +12,17 @@ const TabsContext = React.createContext<TabsContextValue | undefined>(
 
 export function TabsProvider({ children }: { children: React.ReactNode }) {
   const [tabs, setTabs] = useState<chrome.tabs.Tab[]>([]);
+
+  const getTabsFromTabIds = useCallback(async (tabIds: number[]) => {
+    const tabs: chrome.tabs.Tab[] = [];
+
+    for (const tabId of tabIds) {
+      const tab = await chrome.tabs.get(tabId);
+      tabs.push(tab);
+    }
+
+    return tabs;
+  }, []);
 
   const getUngroupedTabs = useCallback(async () => {
     const ungroupedTabs = await chrome.tabs.query({ groupId: -1 });
@@ -37,7 +49,9 @@ export function TabsProvider({ children }: { children: React.ReactNode }) {
   }, [getUngroupedTabs]);
 
   return (
-    <TabsContext.Provider value={{ tabs, groupTabs, refreshTabs }}>
+    <TabsContext.Provider
+      value={{ tabs, getTabsFromTabIds, groupTabs, refreshTabs }}
+    >
       {children}
     </TabsContext.Provider>
   );
